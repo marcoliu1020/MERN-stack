@@ -1,7 +1,7 @@
 import React from "react"
 // import axios from 'axios'
 
-const WorkoutForm = ({ workouts, setWorkouts }) => {
+const WorkoutForm = () => {
     const [title, setTitle] = React.useState('')
     const [load, setLoad] = React.useState('')
     const [reps, setReps] = React.useState('')
@@ -33,7 +33,6 @@ const WorkoutForm = ({ workouts, setWorkouts }) => {
             setLoad('')
             setReps('')
             setError(null)
-            setWorkouts(prev => [json, ...prev])
             console.log('new workout added', json)
         }
 
