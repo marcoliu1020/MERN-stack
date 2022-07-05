@@ -59,7 +59,7 @@ const WorkoutForm = () => {
 
     return (
         <form className="create" onSubmit={handleSumbit}>
-            <h3>Add a New Workout</h3>
+            <h3>Add a New Training</h3>
 
             <label>Excersize Title:</label>
             <input 
