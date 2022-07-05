@@ -8,6 +8,7 @@ const WorkoutForm = () => {
     const [load, setLoad] = React.useState('')
     const [reps, setReps] = React.useState('')
     const [error, setError] = React.useState(null)
+    const [emptyFields, setEmptyFields] = React.useState([])
 
     const { dispatch } = useWorkoutsContext()
 
@@ -30,6 +31,7 @@ const WorkoutForm = () => {
         if (!response.ok) {
             // console.log(json)
             setError(json.error)
+            setEmptyFields(json.emptyFields)
         }
 
         if (response.ok) {
