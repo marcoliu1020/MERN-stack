@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const workoutSchema = new Schema(
+  // create a object
+  // {title: ..., reps: ..., load: ..., createdAt: ..., updatedAt, ...}
   {
     title: {
       type: String,

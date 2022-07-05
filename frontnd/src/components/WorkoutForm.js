@@ -1,11 +1,15 @@
 import React from "react"
 // import axios from 'axios'
 
+import { useWorkoutsContext } from '../hooks/useWorkoutsContext'
+
 const WorkoutForm = () => {
     const [title, setTitle] = React.useState('')
     const [load, setLoad] = React.useState('')
     const [reps, setReps] = React.useState('')
     const [error, setError] = React.useState(null)
+
+    const { dispatch } = useWorkoutsContext()
 
     const handleSumbit = async e => {
         e.preventDefault()
@@ -34,6 +38,7 @@ const WorkoutForm = () => {
             setReps('')
             setError(null)
             console.log('new workout added', json)
+            dispatch({type: 'create_workout', payload: json})
         }
 
         // method - axios
