@@ -1,14 +1,18 @@
 const express = require('express')
 
-const router = express.Router()
-
 const { 
     getWorkout,
     getWorkouts,
     createWorkout, 
     deleteWorkout,
     updateWorkout,
-} = require('../contollers/workout_controller')
+} = require('../contollers/workoutController')
+const requireAuth = require('../middleware/requireAuth')
+
+const router = express.Router()
+
+// require auth for all workout routes
+router.use(requireAuth)
 
 // GET a single workout
 // method - do not import controller file

@@ -27,7 +27,7 @@ const WorkoutsContextProvider = ({ children }) => {
     })
      
     return (
-        // state = {workouts, ...}，把裡面的物件全部展開
+        // state = {workouts, ..., ..., ..., }
         <WorkoutsContext.Provider value={{ ...state, dispatch }}>
             {children}
         </WorkoutsContext.Provider>

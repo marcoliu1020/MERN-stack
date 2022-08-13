@@ -18,9 +18,15 @@ const workoutSchema = new Schema(
       type: Number,
       required: true,
     },
+
+    // 建立的物件需要對應 user id
+    user_id: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
 
 // 'Workout' will be reanme as 'workouts' in collection in MongoDB
-module.exports = mongoose.model('Workout', workoutSchema) 
+module.exports = mongoose.model("Workout", workoutSchema);

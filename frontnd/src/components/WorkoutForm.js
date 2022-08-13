@@ -1,95 +1,103 @@
-import React from "react"
+import React from "react";
 // import axios from 'axios'
 
-import { useWorkoutsContext } from '../hooks/useWorkoutsContext'
+import useWorkoutsContext from "../hooks/useWorkoutsContext";
+import useAuthContext from "../hooks/useAuthContext";
 
 const WorkoutForm = () => {
-    const [title, setTitle] = React.useState('')
-    const [load, setLoad] = React.useState('')
-    const [reps, setReps] = React.useState('')
-    const [error, setError] = React.useState(null)
-    const [emptyFields, setEmptyFields] = React.useState([])
+  const [title, setTitle] = React.useState("");
+  const [load, setLoad] = React.useState("");
+  const [reps, setReps] = React.useState("");
+  const [error, setError] = React.useState(null);
+  const [emptyFields, setEmptyFields] = React.useState([]);
 
-    const { dispatch } = useWorkoutsContext()
+  const { dispatch } = useWorkoutsContext();
+  const { user } = useAuthContext()
 
-    const handleSumbit = async e => {
-        e.preventDefault()
+  const handleSumbit = async e => {
+    e.preventDefault();
 
-        const workout = {title, load, reps}
-
-        // method - fetch
-        const response = await fetch('/api/workouts', {
-            method: 'POST',
-            body: JSON.stringify(workout),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-
-        const json = await response.json()
-
-        if (!response.ok) {
-            // console.log(json)
-            setError(json.error)
-            setEmptyFields(json.emptyFields)
-        }
-
-        if (response.ok) {
-            setTitle('')
-            setLoad('')
-            setReps('')
-            setError(null)
-            setEmptyFields([])
-            console.log('new workout added', json)
-            dispatch({type: 'create_workout', payload: json})
-        }
-
-        // method - axios
-        // try {
-        //     const response = await axios.post('/api/workouts', workout)
-        //     setTitle('')
-        //     setLoad('')
-        //     setReps('')
-        //     setError(null)
-        //     console.log('new workout added', response)
-        // } catch (error) {
-        //     setError(error.response.data.error)
-        // }
+    if (!user) {
+      setError('You must be logged in')
+      return
     }
 
-    return (
-        <form className="create" onSubmit={handleSumbit}>
-            <h3>Add a New Training</h3>
+    const workout = { title, load, reps };
 
-            <label>Excersize Title:</label>
-            <input 
-                type="text"
-                onChange={e => setTitle(e.target.value)}
-                value={title}
-                className={emptyFields.includes('title') ? 'error' : ''}
-            />
+    // method - fetch
+    const response = await fetch("/api/workouts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${user.token}`
+      },
+      body: JSON.stringify(workout),
+    });
 
-            <label>Load (in kg):</label>
-            <input 
-                type="number"
-                onChange={e => setLoad(e.target.value)}
-                value={load}
-                className={emptyFields.includes('load') ? 'error' : ''}
-            />
+    const json = await response.json();
 
-            <label>Reps:</label>
-            <input 
-                type="number"
-                onChange={e => setReps(e.target.value)}
-                value={reps}
-                className={emptyFields.includes('reps') ? 'error' : ''}
-            />
+    if (!response.ok) {
+      // console.log(json)
+      setError(json.error);
+      setEmptyFields(json.emptyFields);
+    }
 
-            <button>Add Workout</button>
+    if (response.ok) {
+      setTitle("");
+      setLoad("");
+      setReps("");
+      setError(null);
+      setEmptyFields([]);
+      console.log("new workout added", json);
+      dispatch({ type: "create_workout", payload: json });
+    }
 
-            {error && <div className="error">{error}</div>}
-        </form>
-    )
-}
+    // method - axios
+    // try {
+    //     const response = await axios.post('/api/workouts', workout)
+    //     setTitle('')
+    //     setLoad('')
+    //     setReps('')
+    //     setError(null)
+    //     console.log('new workout added', response)
+    // } catch (error) {
+    //     setError(error.response.data.error)
+    // }
+  };
 
-export default WorkoutForm
+  return (
+    <form className='create' onSubmit={handleSumbit}>
+      <h3>Add a New Training</h3>
+
+      <label>Excersize Title:</label>
+      <input
+        type='text'
+        onChange={e => setTitle(e.target.value)}
+        value={title}
+        className={emptyFields.includes("title") ? "error" : ""}
+      />
+
+      <label>Load (in kg):</label>
+      <input
+        type='number'
+        onChange={e => setLoad(e.target.value)}
+        value={load}
+        className={emptyFields.includes("load") ? "error" : ""}
+      />
+
+      <label>Reps:</label>
+      <input
+        type='number'
+        onChange={e => setReps(e.target.value)}
+        value={reps}
+        className={emptyFields.includes("reps") ? "error" : ""}
+      />
+
+      <button>Add Workout</button>
+
+      {error && <div className='error'>{error}</div>}
+    </form>
+  );
+};
+
+export default WorkoutForm;

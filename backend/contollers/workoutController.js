@@ -1,5 +1,14 @@
-const Workout = require('../models/workout_model')
+const Workout = require('../models/workoutModel')
 const mongoose = require('mongoose')
+
+// get all workouts
+const getWorkouts = async (req, res) => {
+    const user_id = req.user._id
+
+    const workouts = await Workout.find({ user_id }).sort({ createdAt: -1 })
+
+    res.status(200).json(workouts)
+} 
 
 // get a single workout
 const getWorkout = async (req, res) => {
@@ -13,12 +22,6 @@ const getWorkout = async (req, res) => {
 
     res.status(200).json(workout)
 }
-
-// get all workouts
-const getWorkouts = async (req, res) => {
-    const workouts = await Workout.find({}).sort({ createdAt: -1 })
-    res.status(200).json(workouts)
-} 
 
 // create new workout
 const createWorkout = async (req, res) => {
@@ -38,8 +41,11 @@ const createWorkout = async (req, res) => {
 
     // add document to DB
     try {
+        // ./middleware/requireAuth.js attach _id to req.user
+        const user_id = req.user._id
+
         // const workout = await Workout.create(req.body) // implicity
-        const workout = await Workout.create({ title, load, reps })
+        const workout = await Workout.create({ title, load, reps, user_id })
         res.status(200).json(workout)
     } catch (err) {
         res.status(400).json({ error: err.message })
