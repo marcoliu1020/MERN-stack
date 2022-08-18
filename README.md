@@ -1,4 +1,8 @@
 # MERN-stack
+record your workouts
+
+---
+
 
 ## Installation
 1. create /backend/.env file
@@ -18,6 +22,10 @@
    ```
    npm install
    ```
+
+
+---
+
 
 ## Usage
 1. cd backend
